@@ -113,4 +113,29 @@ void Indice::imprimir(string busca) {
 	}
 }
 
+void Indice::tratar_busca(string busca) {
+    list<string> busca_l;
+
+    // Quebrar a busca em palavras
+    istringstream iss(busca);
+    string palavra;
+    while (iss >> palavra) {
+        // Limpar a palavra removendo caracteres indesejados
+        string limpa;
+        for (char c : palavra) {
+            if (isalpha(c)) {
+                limpa.push_back(tolower(c));
+            }
+        }
+        // Remover espaços em branco antes e depois da palavra
+        trim(limpa);
+        
+        if (!limpa.empty()) {
+            busca_l.push_back(limpa);
+        }
+    }
+    
+    // Verificar se os arquivos contêm a frase completa
+    pesquisa(busca_l);
+}
 
