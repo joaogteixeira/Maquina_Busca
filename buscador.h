@@ -12,3 +12,18 @@ using std::list;
 using std::map;
 using std::string;
 using std::unordered_map;
+
+class Arquivo {
+public:
+  Arquivo();
+
+  map<string, map<string, int>> abrir_arquivo();
+
+  void normalizar(list<string> sujas, string n_do_arq);
+
+  void contagem(const list<string> &limpas, const string &arquivo);
+
+private:
+  map<string, map<string, int>> arquivos_;
+};
+
