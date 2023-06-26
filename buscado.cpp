@@ -138,4 +138,58 @@ void Indice::tratar_busca(string busca) {
     // Verificar se os arquivos contêm a frase completa
     pesquisa(busca_l);
 }
+void Indice::pesquisa(const list<string>& busca_l) {
+    vector<string> arquivosComFraseCompleta;
+    vector<string> arquivosComPartesDaFrase;
 
+    // Verificar os arquivos que contêm a frase completa
+    for (const auto& it : indice_) {
+        const string& palavra = it.first;
+        const map<string, int>& ocorrenciasArquivo = it.second;
+
+        bool encontrouFraseCompleta = true;
+        for (const string& busca : busca_l) {
+            if (ocorrenciasArquivo.find(busca) == ocorrenciasArquivo.end()) {
+                encontrouFraseCompleta = false;
+                break;
+            }
+        }
+
+        if (encontrouFraseCompleta) {
+            for (const auto& pair : ocorrenciasArquivo) {
+                const string& arquivo = pair.first;
+                arquivosComFraseCompleta.push_back(arquivo);
+            }
+        } else {
+            bool encontrouPartesDaFrase = false;
+            for (const string& busca : busca_l) {
+                if (ocorrenciasArquivo.find(busca) != ocorrenciasArquivo.end()) {
+                    encontrouPartesDaFrase = true;
+                    break;
+                }
+            }
+            if (encontrouPartesDaFrase) {
+                for (const auto& pair : ocorrenciasArquivo) {
+                    const string& arquivo = pair.first;
+                    arquivosComPartesDaFrase.push_back(arquivo);
+                }
+            }
+        }
+    }
+
+    // Remover duplicatas dos arquivos com partes da frase
+    sort(arquivosComPartesDaFrase.begin(), arquivosComPartesDaFrase.end());
+    arquivosComPartesDaFrase.erase(unique(arquivosComPartesDaFrase.begin(), arquivosComPartesDaFrase.end()), arquivosComPartesDaFrase.end());
+
+    // Imprimir os arquivos com a frase completa
+    cout << "Arquivos com a frase completa:" << endl;
+    for (const string& arquivo : arquivosComFraseCompleta) {
+        cout << arquivo << endl;
+    }
+
+    // Imprimir os arquivos com partes da frase
+    cout << "Arquivos com partes da frase:" << endl;
+    for (const string& arquivo : arquivosComPartesDaFrase) {
+        cout << arquivo << endl;
+    }
+}
