@@ -37,7 +37,45 @@ map<string, map<string, int>> Arquivo::abrir_arquivo() {
   	while (getline(obj_arquivo, linha)) {
     	istringstream iss(linha);
     	string palavra;
-    		while (iss >> palavra) {
-					palavras.push_back(palavra);
+          while (iss >> palavra) {
+		 palavras.push_back(palavra);
 				}
 		}
+	normalizar(palavras, arquivo.path().filename());
+		palavras.clear();
+		}
+	}
+	return arquivos_;
+}
+
+void trim(string& str) {
+    // Remover espaços em branco à esquerda
+    str.erase(str.begin(), find_if(str.begin(), str.end(), [](int ch) {
+        return !isspace(ch);
+    }));
+    
+    // Remover espaços em branco à direita
+    str.erase(find_if(str.rbegin(), str.rend(), [](int ch) {
+        return !isspace(ch);
+    }).base(), str.end());
+}
+
+void Arquivo::normalizar(list<string> sujas, string n_do_arquivo) {
+    list<string> limpas;
+    for (const string& str : sujas) {
+        string limpa;
+        for (char c : str) {
+            if (isalpha(c)) {
+                limpa.push_back(tolower(c));
+            }
+        }
+        // Remover espaços em branco antes e depois da palavra
+        trim(limpa);
+        if (!limpa.empty()) {
+            limpas.push_back(move(limpa));
+        }
+		}
+    if (!limpas.empty()) {
+        contagem(limpas, n_do_arquivo);
+    }
+}
