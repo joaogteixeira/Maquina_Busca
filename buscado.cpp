@@ -104,5 +104,13 @@ void Arquivo::contagem(const list<string>& limpas, const string& arquivo) {
             arquivos_[palavra][arquivo] = ocorrencias;
         }
     }
+void Indice::imprimir(string busca) {
+	auto it = indice_.find(busca);
+	if (it != indice_.end()) {
+		for (const auto& pair : it->second) {
+			cout << pair.first << " - " << pair.second << endl;
+		}
+	}
 }
+
 
