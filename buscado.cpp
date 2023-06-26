@@ -79,3 +79,30 @@ void Arquivo::normalizar(list<string> sujas, string n_do_arquivo) {
         contagem(limpas, n_do_arquivo);
     }
 }
+void Arquivo::contagem(const list<string>& limpas, const string& arquivo) {
+    unordered_map<string, int> ocorrenciasMap;
+
+    // Contar as ocorrências de cada palavra em limpas
+    for (const string& str : limpas) {
+        ocorrenciasMap[str]++;
+    }
+
+    // Atualizar o mapa arquivos_ com as ocorrências
+    for (const auto& pair : ocorrenciasMap) {
+        const string& palavra = pair.first;
+        int ocorrencias = pair.second;
+
+        auto it = arquivos_.find(palavra);
+        if (it != arquivos_.end()) {
+            // Verificar se o arquivo já existe para a chave 'palavra'
+            auto it2 = it->second.find(arquivo);
+            if (it2 == it->second.end()) {
+                it->second[arquivo] = ocorrencias;
+            }
+        } else {
+            // A chave 'palavra' não existe no mapa, adicionar um novo par chave-valor
+            arquivos_[palavra][arquivo] = ocorrencias;
+        }
+    }
+}
+
