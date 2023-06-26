@@ -26,4 +26,19 @@ public:
 private:
   map<string, map<string, int>> arquivos_;
 };
+class Indice {
+public:
+  Indice();
 
+  void imprimir(string busca);
+
+  void tratar_busca(string busca);
+
+  void pesquisa(const list<string> &busca_l);
+
+private:
+  Arquivo palavra;
+  map<string, map<string, int>> indice_;
+};
+
+#endif //__BUSCADOR_H__
